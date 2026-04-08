@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Off Request</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --purple-50:#EEEDFE;--purple-100:#CECBF6;--purple-200:#AFA9EC;
+    --purple-400:#7F77DD;--purple-600:#534AB7;--purple-800:#3C3489;--purple-900:#26215C;
+    --teal-50:#E1F5EE;--teal-400:#1D9E75;--teal-600:#0F6E56;
+    --amber-50:#FAEEDA;--amber-400:#EF9F27;--amber-600:#854F0B;
+    --blue-50:#E6F1FB;--blue-400:#378ADD;--blue-600:#185FA5;
+    --red-50:#FCEBEB;--red-400:#E24B4A;
+    --gray-50:#F7F6F3;--gray-100:#EDEDEA;--gray-200:#D3D1C7;
+    --gray-400:#888780;--gray-600:#5F5E5A;--gray-800:#2C2C2A;
+    --bg:#FAF9F7;--card:#FFFFFF;--radius:14px;--radius-sm:10px;
+    --shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg:0 4px 16px rgba(0,0,0,0.08),0 12px 40px rgba(0,0,0,0.1);
+    --transition:0.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;line-height:1.5;}
+  .container{width:100%;max-width:540px;}
+  .header{margin-bottom:1.75rem;text-align:center;}
+  .header-icon{width:52px;height:52px;border-radius:16px;background:var(--purple-50);display:inline-flex;align-items:center;justify-content:center;margin-bottom:0.75rem;}
+  .header h1{font-family:'Fraunces',serif;font-size:1.65rem;font-weight:700;color:var(--gray-800);letter-spacing:-0.02em;margin-bottom:0.25rem;}
+  .header p{font-size:0.875rem;color:var(--gray-400);}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.75rem;border:1px solid var(--gray-100);}
+  .employee-banner{display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:1.5rem;}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--purple-200);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.8rem;color:var(--purple-900);flex-shrink:0;}
+  .employee-info strong{display:block;font-size:0.9rem;font-weight:600;}
+  .employee-info span{font-size:0.78rem;color:var(--gray-400);}
+  .field{margin-bottom:1.25rem;}
+  label.field-label{display:block;font-size:0.78rem;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.5rem;}
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+  .chips.three{grid-template-columns:1fr 1fr 1fr;}
+  .chip{padding:0.65rem 0.75rem;border-radius:var(--radius-sm);border:1.5px solid var(--gray-100);background:var(--card);text-align:center;font-size:0.85rem;font-weight:500;color:var(--gray-600);cursor:pointer;transition:all var(--transition);user-select:none;}
+  .chip:hover{border-color:var(--purple-200);background:var(--purple-50);color:var(--purple-800);}
+  .chip.active{border-color:var(--purple-600);background:var(--purple-50);color:var(--purple-800);box-shadow:0 0 0 1px var(--purple-600);}
+  .chip .chip-icon{display:block;font-size:1.1rem;margin-bottom:0.15rem;}
+  .input-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  input[type="date"],select,textarea{width:100%;padding:0.7rem 0.85rem;border-radius:var(--radius-sm);border:1.5px solid var(--gray-100);background:var(--card);font-family:inherit;font-size:0.875rem;color:var(--gray-800);transition:border-color var(--transition),box-shadow var(--transition);outline:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--purple-400);box-shadow:0 0 0 3px rgba(83,74,183,0.12);}
+  textarea{resize:vertical;min-height:70px;}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23888780' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.85rem center;padding-right:2.2rem;}
+  optgroup{font-weight:600;color:var(--gray-600);font-size:0.85rem;}
+  .info-banner{display:flex;align-items:center;gap:0.6rem;padding:0.7rem 0.85rem;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:500;margin-bottom:1.25rem;}
+  .info-banner.blue{background:var(--blue-50);color:var(--blue-600);}
+  .info-banner.amber{background:var(--amber-50);color:var(--amber-600);}
+  .info-banner svg{flex-shrink:0;}
+  .conflict-banner{display:none;align-items:flex-start;gap:0.6rem;padding:0.7rem 0.85rem;border-radius:var(--radius-sm);background:var(--amber-50);color:var(--amber-600);font-size:0.82rem;font-weight:500;margin-bottom:1.25rem;}
+  .conflict-banner.show{display:flex;}
+  .btn-submit{width:100%;padding:0.85rem;border:none;border-radius:var(--radius-sm);background:var(--purple-600);color:#fff;font-family:inherit;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all var(--transition);}
+  .btn-submit:hover{background:var(--purple-800);transform:translateY(-1px);box-shadow:var(--shadow-lg);}
+  .btn-submit:active{transform:translateY(0);}
+  .footer-note{text-align:center;font-size:0.75rem;color:var(--gray-400);margin-top:0.85rem;}
+  .success-overlay{display:none;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;text-align:center;}
+  .success-overlay.show{display:flex;}
+  .success-icon{width:64px;height:64px;border-radius:50%;background:var(--teal-50);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+  .success-overlay h2{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:0.5rem;}
+  .success-overlay p{font-size:0.875rem;color:var(--gray-400);max-width:340px;}
+  .btn-another{margin-top:1.25rem;padding:0.6rem 1.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--gray-200);background:var(--card);font-family:inherit;font-size:0.85rem;font-weight:500;color:var(--gray-600);cursor:pointer;transition:all var(--transition);}
+  .btn-another:hover{border-color:var(--purple-400);color:var(--purple-600);}
+  .field-error{font-size:0.75rem;color:var(--red-400);margin-top:0.3rem;display:none;}
+  .field-error.show{display:block;}
+  .openup-section{display:none;margin-bottom:1.25rem;padding:1rem;background:var(--gray-50);border-radius:var(--radius-sm);border:1.5px dashed var(--gray-200);}
+  .openup-section.show{display:block;}
+  .openup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;}
+  .openup-header span{font-size:0.82rem;font-weight:600;color:var(--gray-600);}
+  .openup-row{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;align-items:end;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:0.5px dashed var(--gray-200);}
+  .openup-row:last-child{border-bottom:none;margin-bottom:0.5rem;}
+  .openup-row select,.openup-row input{font-size:0.8rem;padding:0.55rem 0.7rem;}
+  .openup-label{font-size:0.7rem;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:3px;}
+  .btn-add-day{display:inline-flex;align-items:center;gap:4px;padding:0.45rem 0.85rem;border-radius:var(--radius-sm);border:1.5px dashed var(--purple-200);background:transparent;font-family:inherit;font-size:0.8rem;font-weight:500;color:var(--purple-600);cursor:pointer;transition:all var(--transition);}
+  .btn-add-day:hover{background:var(--purple-50);border-color:var(--purple-400);}
+  .btn-remove{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:var(--red-400);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--transition);}
+  .btn-remove:hover{background:var(--red-50);}
+  .openup-note{font-size:0.75rem;color:var(--gray-400);margin-top:0.5rem;line-height:1.4;}
+  @media(max-width:480px){.openup-row{grid-template-columns:1fr 1fr;}.openup-row .btn-remove{grid-column:span 2;justify-self:end;}}
+  @media(max-width:480px){body{padding:1rem 0.5rem;}.card{padding:1.25rem;}.chips.three{grid-template-columns:1fr;}.input-row{grid-template-columns:1fr;}.openup-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-icon">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="2" y="4" width="22" height="20" rx="3.5" stroke="#534AB7" stroke-width="1.8" fill="none"/><path d="M2 10h22" stroke="#534AB7" stroke-width="1.8"/><rect x="7.5" y="1.5" width="1.5" height="5" rx="0.75" fill="#534AB7"/><rect x="17" y="1.5" width="1.5" height="5" rx="0.75" fill="#534AB7"/><circle cx="9" cy="15" r="1.2" fill="#534AB7"/><circle cx="13" cy="15" r="1.2" fill="#AFA9EC"/><circle cx="17" cy="15" r="1.2" fill="#AFA9EC"/><circle cx="9" cy="19.5" r="1.2" fill="#AFA9EC"/><circle cx="13" cy="19.5" r="1.2" fill="#AFA9EC"/></svg>
+    </div>
+    <h1>Time off request</h1>
+    <p>Submit your request — your manager will be notified automatically.</p>
+  </div>
+  <div class="card">
+    <form id="timeOffForm" autocomplete="off">
+      <div class="field">
+        <label class="field-label">Your name</label>
+        <select id="employee" required>
+          <option value="">Select your name</option>
+          <optgroup label="Management">
+            <option value="E001" data-name="Mandy Best" data-role="Owner" data-mgr="—" data-bal="20">Mandy Best</option>
+            <option value="E002" data-name="Tridip Maity" data-role="Manager" data-mgr="Mandy Best" data-bal="18">Tridip Maity</option>
+            <option value="E003" data-name="Kelly Miedema" data-role="Front Desk Manager" data-mgr="Tridip Maity" data-bal="15">Kelly Miedema</option>
+          </optgroup>
+          <optgroup label="Estheticians">
+            <option value="E004" data-name="Larissa Willoughby" data-role="Esthetician" data-mgr="Tridip Maity" data-bal="12">Larissa Willoughby</option>
+            <option value="E005" data-name="Ayana Patterson" data-role="Esthetician" data-mgr="Tridip Maity" data-bal="12">Ayana Patterson</option>
+            <option value="E006" data-name="Sarah Masterson" data-role="Esthetician" data-mgr="Tridip Maity" data-bal="12">Sarah Masterson</option>
+            <option value="E007" data-name="Mariah Nadeau" data-role="Esthetician" data-mgr="Tridip Maity" data-bal="12">Mariah Nadeau</option>
+            <option value="E008" data-name="Ashleigh Mckeever" data-role="Esthetician" data-mgr="Tridip Maity" data-bal="12">Ashleigh Mckeever</option>
+          </optgroup>
+          <optgroup label="Hairstylists">
+            <option value="E009" data-name="Autumn Costall" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Autumn Costall</option>
+            <option value="E010" data-name="Brenda Bain" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Brenda Bain</option>
+            <option value="E011" data-name="Luda Voitsikhova" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Luda Voitsikhova</option>
+            <option value="E012" data-name="Terri Schwendemann" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Terri Schwendemann</option>
+            <option value="E013" data-name="Shanda Burbine" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Shanda Burbine</option>
+            <option value="E014" data-name="Lenore McDowell" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Lenore McDowell</option>
+            <option value="E015" data-name="Kendall Tremblay" data-role="Hairstylist" data-mgr="Tridip Maity" data-bal="12">Kendall Tremblay</option>
+          </optgroup>
+          <optgroup label="Massage Therapists">
+            <option value="E016" data-name="Laura Acuna" data-role="Massage Therapist" data-mgr="Tridip Maity" data-bal="12">Laura Acuna</option>
+            <option value="E017" data-name="Shane Guertin" data-role="Massage Therapist" data-mgr="Tridip Maity" data-bal="12">Shane Guertin</option>
+            <option value="E018" data-name="Michaela Baur-Samborn" data-role="Massage Therapist" data-mgr="Tridip Maity" data-bal="12">Michaela Baur-Samborn</option>
+            <option value="E019" data-name="Jovana Zivanovic" data-role="Massage Therapist" data-mgr="Tridip Maity" data-bal="12">Jovana Zivanovic</option>
+            <option value="E020" data-name="Jenny Hoover" data-role="Massage Therapist" data-mgr="Tridip Maity" data-bal="12">Jenny Hoover</option>
+          </optgroup>
+          <optgroup label="Reception">
+            <option value="E021" data-name="Brianna Woycheshin" data-role="Reception" data-mgr="Kelly Miedema" data-bal="10">Brianna Woycheshin</option>
+            <option value="E022" data-name="Malek Patterson" data-role="Reception" data-mgr="Kelly Miedema" data-bal="10">Malek Patterson</option>
+            <option value="E023" data-name="Emerson Sisson" data-role="Reception" data-mgr="Kelly Miedema" data-bal="10">Emerson Sisson</option>
+            <option value="E024" data-name="Leona Akehurst" data-role="Reception" data-mgr="Kelly Miedema" data-bal="10">Leona Akehurst</option>
+            <option value="E025" data-name="Marissa Braisher" data-role="Reception" data-mgr="Kelly Miedema" data-bal="10">Marissa Braisher</option>
+          </optgroup>
+          <optgroup label="Support">
+            <option value="E026" data-name="Gabrielle Flowers" data-role="Salon Support" data-mgr="Tridip Maity" data-bal="10">Gabrielle Flowers</option>
+            <option value="E027" data-name="Emma Illes" data-role="Salon Support" data-mgr="Tridip Maity" data-bal="10">Emma Illes</option>
+            <option value="E028" data-name="Susan Los" data-role="Spa Support" data-mgr="Tridip Maity" data-bal="10">Susan Los</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="employee-banner" id="empBanner" style="display:none;">
+        <div class="avatar" id="empAvatar">MB</div>
+        <div class="employee-info">
+          <strong id="empName">Mandy Best</strong>
+          <span id="empMeta">Owner — 20 days remaining</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Leave type</label>
+        <div class="chips" id="leaveTypeChips">
+          <div class="chip active" data-value="Vacation"><span class="chip-icon">☀</span>Vacation</div>
+          <div class="chip" data-value="Sick"><span class="chip-icon">🤒</span>Sick leave</div>
+          <div class="chip" data-value="Personal"><span class="chip-icon">🏠</span>Personal</div>
+          <div class="chip" data-value="Other"><span class="chip-icon">📋</span>Other</div>
+        </div>
+        <input type="hidden" id="leaveType" value="Vacation">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Dates</label>
+        <div class="input-row">
+          <div><input type="date" id="startDate" required><div class="field-error" id="startErr">Please select a start date</div></div>
+          <div><input type="date" id="endDate" required><div class="field-error" id="endErr">End date must be on or after start date</div></div>
+        </div>
+      </div>
+
+      <div class="info-banner blue" id="daysBanner" style="display:none;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4.5v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".75" fill="currentColor"/></svg>
+        <span id="daysText"></span>
+      </div>
+
+      <div class="conflict-banner" id="conflictBanner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L14.5 13H1.5L8 1.5z" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 6.5v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".6" fill="currentColor"/></svg>
+        <span id="conflictText"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Duration</label>
+        <div class="chips three" id="durationChips">
+          <div class="chip active" data-value="Full days">Full days</div>
+          <div class="chip" data-value="Half day (AM)">Half day AM</div>
+          <div class="chip" data-value="Half day (PM)">Half day PM</div>
+        </div>
+        <input type="hidden" id="duration" value="Full days">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Reason <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-400);">(optional)</span></label>
+        <textarea id="reason" placeholder="E.g. family vacation, medical appointment, personal day..."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Coverage teammate <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-400);">(optional)</span></label>
+        <select id="coverage">
+          <option value="">No coverage needed</option>
+          <optgroup label="Management"><option>Mandy Best</option><option>Tridip Maity</option><option>Kelly Miedema</option></optgroup>
+          <optgroup label="Estheticians"><option>Larissa Willoughby</option><option>Ayana Patterson</option><option>Sarah Masterson</option><option>Mariah Nadeau</option><option>Ashleigh Mckeever</option></optgroup>
+          <optgroup label="Hairstylists"><option>Autumn Costall</option><option>Brenda Bain</option><option>Luda Voitsikhova</option><option>Terri Schwendemann</option><option>Shanda Burbine</option><option>Lenore McDowell</option><option>Kendall Tremblay</option></optgroup>
+          <optgroup label="Massage Therapists"><option>Laura Acuna</option><option>Shane Guertin</option><option>Michaela Baur-Samborn</option><option>Jovana Zivanovic</option><option>Jenny Hoover</option></optgroup>
+          <optgroup label="Reception"><option>Brianna Woycheshin</option><option>Malek Patterson</option><option>Emerson Sisson</option><option>Leona Akehurst</option><option>Marissa Braisher</option></optgroup>
+          <optgroup label="Support"><option>Gabrielle Flowers</option><option>Emma Illes</option><option>Susan Los</option></optgroup>
+        </select>
+      </div>
+
+      <!-- Open-up schedule (Hairstylists, Estheticians & Massage Therapists) -->
+      <div class="openup-section" id="openupSection">
+        <div class="openup-header">
+          <span>Opening up other days?</span>
+        </div>
+        <p style="font-size:0.8rem;color:var(--gray-400);margin:0 0 0.75rem;line-height:1.5;">Since you're taking time off, would you like to open up any other days to reschedule your clients? Add as many as you need.</p>
+        <div id="openupRows"></div>
+        <button type="button" class="btn-add-day" id="btnAddDay" onclick="addOpenUpRow()">+ Add a day</button>
+        <p class="openup-note">This info will be included in the notification to your manager.</p>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit request</button>
+      <p class="footer-note">Your manager will receive an email notification for approval.</p>
+    </form>
+
+    <div class="success-overlay" id="successState">
+      <div class="success-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14.5L12 19.5L21 9.5" stroke="#0F6E56" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>Request submitted!</h2>
+      <p id="successMsg">Your manager has been notified.</p>
+      <button class="btn-another" id="btnAnother">Submit another request</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.chips').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const hid = group.id === 'leaveTypeChips' ? 'leaveType' : 'duration';
+      document.getElementById(hid).value = chip.dataset.value;
+      if (hid === 'duration') recalcDays();
+    });
+  });
+});
+
+const empSelect = document.getElementById('employee');
+const banner = document.getElementById('empBanner');
+empSelect.addEventListener('change', () => {
+  const opt = empSelect.options[empSelect.selectedIndex];
+  if (!opt.value) { banner.style.display = 'none'; return; }
+  const name = opt.dataset.name;
+  document.getElementById('empAvatar').textContent = name.split(' ').map(n=>n[0]).join('');
+  document.getElementById('empName').textContent = name;
+  const mgr = opt.dataset.mgr;
+  const mgrLine = mgr && mgr !== '—' ? ` · Reports to: ${mgr}` : '';
+  document.getElementById('empMeta').textContent = `${opt.dataset.role} — ${opt.dataset.bal} days remaining${mgrLine}`;
+  banner.style.display = 'flex';
+  document.querySelectorAll('#coverage option').forEach(o => {
+    o.style.display = o.textContent.trim() === name ? 'none' : '';
+  });
+  // Show open-up section for Hairstylists, Estheticians, and Massage Therapists
+  const showOpenUp = opt.dataset.role === 'Hairstylist' || opt.dataset.role === 'Esthetician' || opt.dataset.role === 'Massage Therapist';
+  document.getElementById('openupSection').classList.toggle('show', showOpenUp);
+  if (!showOpenUp) document.getElementById('openupRows').innerHTML = '';
+  recalcDays();
+});
+
+const startDate = document.getElementById('startDate');
+const endDate = document.getElementById('endDate');
+const today = new Date().toISOString().split('T')[0];
+startDate.min = today; endDate.min = today;
+startDate.addEventListener('change', () => {
+  endDate.min = startDate.value;
+  if (endDate.value && endDate.value < startDate.value) endDate.value = startDate.value;
+  recalcDays();
+});
+endDate.addEventListener('change', recalcDays);
+
+function getBusinessDays(s, e) {
+  let count = 0, d = new Date(s+'T12:00:00'), end = new Date(e+'T12:00:00');
+  while (d <= end) { if (d.getDay()%6) count++; d.setDate(d.getDate()+1); }
+  return count;
+}
+
+function recalcDays() {
+  const db = document.getElementById('daysBanner');
+  if (!startDate.value || !endDate.value) { db.style.display='none'; return; }
+  const dur = document.getElementById('duration').value;
+  let days = dur.includes('Half') ? 0.5 : getBusinessDays(startDate.value, endDate.value);
+  if (dur.includes('Half')) endDate.value = startDate.value;
+  const opt = empSelect.options[empSelect.selectedIndex];
+  const bal = opt.value ? parseFloat(opt.dataset.bal) : 0;
+  const rem = Math.round((bal - days)*10)/10;
+  let text = `${days} business day${days!==1?'s':''}`;
+  if (opt.value) text += ` — ${rem>=0?rem:0} days remaining after`;
+  document.getElementById('daysText').textContent = text;
+  db.className = 'info-banner ' + (rem<0?'amber':'blue');
+  db.style.display = 'flex';
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║  IMPORTANT: Replace the URL below with YOUR Apps       ║
+// ║  Script Web App URL from Phase 2 of the setup guide.   ║
+// ╚══════════════════════════════════════════════════════════╝
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvjR7w9mFolSkHqXbF2LDjK4CVIeGKjs8Azky5WUIr_pxMFjHO3J60I2dn0IY2e2nuLg/exec";
+
+let openUpCounter = 0;
+
+// Business hours by day of week (0=Sunday, 1=Monday, ... 6=Saturday)
+const BUSINESS_HOURS = {
+  0: { open: '9:00 AM', close: '3:00 PM', label: 'Sun' },   // Sunday
+  1: { open: '9:00 AM', close: '8:00 PM', label: 'Mon' },   // Monday
+  2: { open: '9:00 AM', close: '8:00 PM', label: 'Tue' },   // Tuesday
+  3: { open: '9:00 AM', close: '8:00 PM', label: 'Wed' },   // Wednesday
+  4: { open: '9:00 AM', close: '9:00 PM', label: 'Thu' },   // Thursday
+  5: { open: '9:00 AM', close: '7:00 PM', label: 'Fri' },   // Friday
+  6: { open: '9:00 AM', close: '5:00 PM', label: 'Sat' },   // Saturday
+};
+
+function generateTimeOptions(closeTime, selectedVal) {
+  const allTimes = [
+    '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+    '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
+    '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM',
+    '6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM'
+  ];
+  const closeIdx = allTimes.indexOf(closeTime);
+  const available = closeIdx >= 0 ? allTimes.slice(0, closeIdx + 1) : allTimes;
+  return available.map(t =>
+    '<option value="' + t + '"' + (t === selectedVal ? ' selected' : '') + '>' + t + '</option>'
+  ).join('');
+}
+
+function updateTimeSelects(rowEl) {
+  const dateInput = rowEl.querySelector('.openup-date');
+  const fromSelect = rowEl.querySelector('.openup-from');
+  const toSelect = rowEl.querySelector('.openup-to');
+  const hoursHint = rowEl.querySelector('.hours-hint');
+  if (!dateInput.value) return;
+  const d = new Date(dateInput.value + 'T12:00:00');
+  const dayOfWeek = d.getDay();
+  const hours = BUSINESS_HOURS[dayOfWeek];
+  const prevFrom = fromSelect.value;
+  const prevTo = toSelect.value;
+  fromSelect.innerHTML = generateTimeOptions(hours.close, prevFrom || '9:00 AM');
+  toSelect.innerHTML = generateTimeOptions(hours.close, prevTo || hours.close);
+  if (!fromSelect.querySelector('option[value="' + prevFrom + '"]')) fromSelect.value = '9:00 AM';
+  if (!toSelect.querySelector('option[value="' + prevTo + '"]')) toSelect.value = hours.close;
+  if (hoursHint) hoursHint.textContent = hours.label + ': 9:00 AM – ' + hours.close;
+}
+
+function addOpenUpRow() {
+  openUpCounter++;
+  const container = document.getElementById('openupRows');
+  const row = document.createElement('div');
+  row.className = 'openup-row';
+  row.id = 'openup-' + openUpCounter;
+  const minDate = new Date().toISOString().split('T')[0];
+  const defaultOpts = generateTimeOptions('5:00 PM', '');
+  row.innerHTML =
+    '<div style="grid-column:1 / -1;"><div class="openup-label">Date</div><div style="display:flex;gap:8px;align-items:center;">' +
+      '<input type="date" min="' + minDate + '" class="openup-date" style="flex:1;" onchange="updateTimeSelects(this.closest(\'.openup-row\'))">' +
+      '<span class="hours-hint" style="font-size:0.7rem;color:var(--gray-400);white-space:nowrap;min-width:120px;"></span>' +
+      '<button type="button" class="btn-remove" onclick="removeOpenUpRow(\'' + openUpCounter + '\')" title="Remove">&times;</button>' +
+    '</div></div>' +
+    '<div><div class="openup-label">From</div><select class="openup-from">' + defaultOpts + '</select></div>' +
+    '<div><div class="openup-label">To</div><select class="openup-to">' + defaultOpts + '</select></div>';
+  container.appendChild(row);
+}
+
+function removeOpenUpRow(id) {
+  const row = document.getElementById('openup-' + id);
+  if (row) row.remove();
+}
+
+function getOpenUpDays() {
+  const rows = document.querySelectorAll('.openup-row');
+  const days = [];
+  rows.forEach(row => {
+    const d = row.querySelector('.openup-date');
+    const from = row.querySelector('.openup-from');
+    const to = row.querySelector('.openup-to');
+    if (d && d.value) {
+      days.push({ date: d.value, from: from.value, to: to.value });
+    }
+  });
+  return days;
+}
+
+document.getElementById('timeOffForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  let valid = true;
+  if (!empSelect.value) { empSelect.focus(); valid=false; }
+  if (!startDate.value) { document.getElementById('startErr').classList.add('show'); valid=false; }
+  else document.getElementById('startErr').classList.remove('show');
+  if (!endDate.value||endDate.value<startDate.value) { document.getElementById('endErr').classList.add('show'); valid=false; }
+  else document.getElementById('endErr').classList.remove('show');
+  if (!valid) return;
+
+  const opt = empSelect.options[empSelect.selectedIndex];
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  const payload = {
+    employeeId: opt.value,
+    employeeName: opt.dataset.name,
+    role: opt.dataset.role,
+    leaveType: document.getElementById('leaveType').value,
+    startDate: startDate.value,
+    endDate: endDate.value,
+    duration: document.getElementById('duration').value,
+    reason: document.getElementById('reason').value,
+    coverage: document.getElementById('coverage').value,
+    openUpDays: getOpenUpDays()
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const mgr = opt.dataset.mgr;
+    document.getElementById('successMsg').textContent = mgr && mgr !== '—'
+      ? `Your manager ${mgr} has been notified and will review your request.`
+      : 'Your request has been submitted and will be reviewed shortly.';
+    document.getElementById('timeOffForm').style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+  } catch (err) {
+    alert('Something went wrong. Please try again or notify your manager directly.');
+  }
+  btn.textContent = 'Submit request';
+  btn.disabled = false;
+});
+
+document.getElementById('btnAnother').addEventListener('click', () => {
+  document.getElementById('timeOffForm').reset();
+  document.getElementById('timeOffForm').style.display = '';
+  document.getElementById('successState').classList.remove('show');
+  banner.style.display = 'none';
+  document.getElementById('daysBanner').style.display = 'none';
+  document.getElementById('openupSection').classList.remove('show');
+  document.getElementById('openupRows').innerHTML = '';
+  openUpCounter = 0;
+  document.querySelectorAll('.chips').forEach(g => {
+    g.querySelectorAll('.chip').forEach((c,i) => c.classList.toggle('active',i===0));
+  });
+  document.getElementById('leaveType').value='Vacation';
+  document.getElementById('duration').value='Full days';
+});
+</script>
+</body>
+</html>
